@@ -1,0 +1,93 @@
+:root {
+  --cursor-size: 24px;
+  --line-length: 9px;
+  --line-thickness: 3px;
+  --normal-gap-half: 1.5px; /* Half of a 3px gap */
+  --hovered-gap-half: 3px;  /* Half of a 6px gap */
+}
+
+/* Hide the default cursor */
+body {
+  cursor: none;
+}
+
+/* Container for the custom cursor */
+.custom-cursor {
+  position: fixed;
+  width: var(--cursor-size);
+  height: var(--cursor-size);
+  pointer-events: none;
+  /* Center the container on the cursor position */
+  transform: translate(-50%, -50%);
+  transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+  z-index: 9999;
+  will-change: transform;
+}
+
+/* Vertical lines */
+.custom-cursor .line.top {
+  position: absolute;
+  background-color: #b0bec5;
+  width: var(--line-thickness);
+  height: var(--line-length);
+  left: calc(50% - var(--line-thickness) / 2);
+  /* Position so its bottom edge is just above the center */
+  top: calc(50% - var(--normal-gap-half) - var(--line-length));
+  transition: top 0.3s ease;
+}
+
+.custom-cursor .line.bottom {
+  position: absolute;
+  background-color: #b0bec5;
+  width: var(--line-thickness);
+  height: var(--line-length);
+  left: calc(50% - var(--line-thickness) / 2);
+  /* Position so its top edge is just below the center */
+  top: calc(50% + var(--normal-gap-half));
+  transition: top 0.3s ease;
+}
+
+/* Horizontal lines */
+.custom-cursor .line.left {
+  position: absolute;
+  background-color: #b0bec5;
+  height: var(--line-thickness);
+  width: var(--line-length);
+  top: calc(50% - var(--line-thickness) / 2);
+  /* Position so its right edge is just left of center */
+  left: calc(50% - var(--normal-gap-half) - var(--line-length));
+  transition: left 0.3s ease;
+}
+
+.custom-cursor .line.right {
+  position: absolute;
+  background-color: #b0bec5;
+  height: var(--line-thickness);
+  width: var(--line-length);
+  top: calc(50% - var(--line-thickness) / 2);
+  /* Position so its left edge is just right of center */
+  left: calc(50% + var(--normal-gap-half));
+  transition: left 0.3s ease;
+}
+
+/* Hovered state: expand the gap without changing the line lengths */
+.custom-cursor.hovered .line.top {
+  top: calc(50% - var(--hovered-gap-half) - var(--line-length));
+}
+
+.custom-cursor.hovered .line.bottom {
+  top: calc(50% + var(--hovered-gap-half));
+}
+
+.custom-cursor.hovered .line.left {
+  left: calc(50% - var(--hovered-gap-half) - var(--line-length));
+}
+
+.custom-cursor.hovered .line.right {
+  left: calc(50% + var(--hovered-gap-half));
+}
+
+/* Also rotate the entire cursor by 45° for a floaty effect */
+.custom-cursor.hovered {
+  transform: translate(-50%, -50%) rotate(45deg);
+}
