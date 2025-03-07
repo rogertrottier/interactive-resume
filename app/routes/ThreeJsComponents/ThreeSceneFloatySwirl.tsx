@@ -42,19 +42,19 @@ function ParticleSwirl({ count = 1000 }) {
   // Use a ref to hold the pointer's world position.
   const target = useRef(new THREE.Vector3(0, 0, 0));
   useEffect(() => {
-    const handleMouseMove = (event: MouseEvent) => {
-      // Only process mouse events if the document is visible.
+    const handlePointerMove = (event: PointerEvent) => {
+      // If the document is hidden, ignore the event.
       if (document.hidden) return;
       const ndc = new THREE.Vector3(
         (event.clientX / window.innerWidth) * 2 - 1,
-        - (event.clientY / window.innerHeight) * 2 + 1,
-        0.8 // z value in NDC (adjust as needed)
+        -(event.clientY / window.innerHeight) * 2 + 1,
+        0.8 // z value in NDC
       );
       ndc.unproject(camera);
       target.current.copy(ndc);
     };
-    window.addEventListener("mousemove", handleMouseMove);
-    return () => window.removeEventListener("mousemove", handleMouseMove);
+    window.addEventListener("pointermove", handlePointerMove);
+    return () => window.removeEventListener("pointermove", handlePointerMove);
   }, [camera]);
 
   // Use a ref to track page visibility.

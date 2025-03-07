@@ -9,6 +9,8 @@ import { ThreeSceneParticlesSwirl } from "./ThreeJsComponents/ThreeSceneParticle
 import { ThreeSceneFloatySwirl } from "./ThreeJsComponents/ThreeSceneFloatySwirl"
 import { ThreeSceneShaderCloudy } from "./ThreeJsComponents/ThreeSceneShaderCloudy";
 import CustomCursor from "~/routes/CustomCursor/CustomCursor";
+import { useIsMobile } from './useIsMobile'; 
+
 import "~/routes/CustomCursor/CustomCursor.css"
 
 
@@ -20,6 +22,8 @@ export function meta({ }: Route.MetaArgs) {
 }
 
 export default function Home() {
+  const isMobile = useIsMobile();
+
   const resumeProfile = {
     heroImg: './public/OlympicSunset.png',
     fullProfileImg: './public/Roger_Black_White_Alpha.png',
@@ -51,18 +55,16 @@ export default function Home() {
 
   return (
     <>
-      <CustomCursor />
+      {!isMobile && <CustomCursor />}
       {/* <Welcome /> */}
       {/* <Hero /> */}
-      <div className="relative w-screen h-screen overflow-hidden">
+      <div className="relative w-screen h-screen">
         {/* <ThreeSceneShaderCloudy /> */}
         <ThreeSceneFloatySwirl />
         <ThreeSceneFloatySwirl />
         <ThreeSceneFloatySwirl />
-        <ThreeSceneFloatySwirl />
-        <ThreeSceneFloatySwirl />
         <div className="flex justify-center items-center w-full min-h-screen bg-[#080b26]">
-          <div className="relative w-full max-w-[1200px] p-8 bg-[#0d102e]/50 backdrop-blur-[2px] shadow-lg border border-[#1a1d40] rounded-lg">
+          <div className="relative w-full max-w-[1200px] p-8 bg-[#0d102e]/50 backdrop-blur-[0.4px] md:backdrop-blur-[1.5px] shadow-lg border border-[#1a1d40] rounded-lg">
             <Profile />
             <Experience />
             <Skills />

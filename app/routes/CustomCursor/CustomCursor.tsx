@@ -1,38 +1,41 @@
 import React, { useState, useEffect } from 'react';
 import './CustomCursor.css';
 
-const CustomCursor = () => {
-  const [position, setPosition] = useState({ x: 0, y: 0 });
-  const [isInteractive, setIsInteractive] = useState(false);
+const CustomCursor: React.FC = () => {
+  const [position, setPosition] = useState(() => ({
+    x: typeof window !== 'undefined' ? window.innerWidth / 2 : 0,
+    y: typeof window !== 'undefined' ? window.innerHeight / 2 : 0,
+  }));
+  const [hovered, setHovered] = useState(false);
 
   useEffect(() => {
-    const handleMouseMove = (e) => {
-      const { clientX, clientY } = e;
-      setPosition({ x: clientX, y: clientY });
+    // Hide the system cursor globally (though the global CSS should handle this)
+    const originalCursor = document.body.style.cursor;
+    document.body.style.cursor = 'none';
 
-      // Check for an interactive element under the cursor
-      const element = document.elementFromPoint(clientX, clientY);
+    const handleMouseMove = (e: MouseEvent) => {
+      setPosition({ x: e.clientX, y: e.clientY });
+      // Check for an interactive element under the pointer
+      const element = document.elementFromPoint(e.clientX, e.clientY);
       if (element && element.closest('.interactive')) {
-        setIsInteractive(true);
+        setHovered(true);
       } else {
-        setIsInteractive(false);
+        setHovered(false);
       }
     };
 
-    document.addEventListener('mousemove', handleMouseMove);
-    return () => document.removeEventListener('mousemove', handleMouseMove);
+    window.addEventListener('mousemove', handleMouseMove);
+    return () => {
+      window.removeEventListener('mousemove', handleMouseMove);
+      document.body.style.cursor = originalCursor;
+    };
   }, []);
 
   return (
     <div
-      className={`custom-cursor ${isInteractive ? 'hovered' : ''}`}
+      className={`custom-cursor ${hovered ? 'hovered' : ''}`}
       style={{ left: `${position.x}px`, top: `${position.y}px` }}
-    >
-      <div className="line top"></div>
-      <div className="line bottom"></div>
-      <div className="line left"></div>
-      <div className="line right"></div>
-    </div>
+    />
   );
 };
 
