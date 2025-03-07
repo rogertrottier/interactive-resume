@@ -12,6 +12,7 @@ import CustomCursor from "~/routes/CustomCursor/CustomCursor";
 import { useIsMobile } from './useIsMobile'; 
 
 import "~/routes/CustomCursor/CustomCursor.css"
+import FadeOverlay from "./ThreeJsComponents/ThreeSceneFadeOverlay";
 
 
 export function meta({ }: Route.MetaArgs) {
@@ -57,14 +58,13 @@ export default function Home() {
     <>
       {!isMobile && <CustomCursor />}
       {/* <Welcome /> */}
-      {/* <Hero /> */}
+      <Hero />
       <div className="relative w-screen h-screen">
         {/* <ThreeSceneShaderCloudy /> */}
         <ThreeSceneFloatySwirl />
-        <ThreeSceneFloatySwirl />
-        <ThreeSceneFloatySwirl />
+        {!isMobile && <ThreeSceneFloatySwirl />}
         <div className="flex justify-center items-center w-full min-h-screen bg-[#080b26]">
-          <div className="relative w-full max-w-[1200px] p-8 bg-[#0d102e]/50 backdrop-blur-[0.4px] md:backdrop-blur-[1.5px] shadow-lg border border-[#1a1d40] rounded-lg">
+          <div className="relative w-full max-w-[1200px] p-8 bg-[#0d102e]/50 backdrop-blur-[0.1px] md:backdrop-blur-[1.5px] shadow-lg border border-[#1a1d40] rounded-lg">
             <Profile />
             <Experience />
             <Skills />
