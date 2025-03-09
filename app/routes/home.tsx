@@ -1,26 +1,26 @@
+import React from 'react';
+import ReactDOM from 'react-dom/client';
 import type { Route } from "./+types/home";
 import { Welcome } from "../welcome/welcome";
 import { Hero } from "../routes/hero";
 import { Profile } from "../routes/profile";
 import { Experience } from "./experience";
-import { Skills } from "./skills";
+import { Skills } from "./Skills";
+import { Footer } from "./Footer";
 import { ThreeSceneBallCircling } from "./ThreeJsComponents/ThreeSceneBallCircling";
 import { ThreeSceneParticlesSwirl } from "./ThreeJsComponents/ThreeSceneParticlesSwirl";
 import { ThreeSceneFloatySwirl } from "./ThreeJsComponents/ThreeSceneFloatySwirl"
 import { ThreeSceneShaderCloudy } from "./ThreeJsComponents/ThreeSceneShaderCloudy";
+import { ThreeSceneFloatyModelSwirl } from "./ThreeJsComponents/ThreeSceneFloatyModelSwirl";
+import { ThreeSceneFluidSimulation } from "./ThreeJsComponents/ThreeSceneFluidSimulation"
+import { ThreeSceneFloatySineWave } from "./ThreeJsComponents/ThreeSceneFloatySineWave"
 import CustomCursor from "~/routes/CustomCursor/CustomCursor";
-import { useIsMobile } from './useIsMobile'; 
+import { MouseProvider } from "~/routes/CustomCursor/MouseContext"
+import { useIsMobile } from './useIsMobile';
 
 import "~/routes/CustomCursor/CustomCursor.css"
 import FadeOverlay from "./ThreeJsComponents/ThreeSceneFadeOverlay";
-
-
-export function meta({ }: Route.MetaArgs) {
-  return [
-    { title: "New React Router App" },
-    { name: "description", content: "Welcome to React Router!" },
-  ];
-}
+import { GpuWaveScene } from './ThreeJsComponents/GPURender/GpuScene';
 
 export default function Home() {
   const isMobile = useIsMobile();
@@ -56,30 +56,44 @@ export default function Home() {
 
   return (
     <>
-      {!isMobile && <CustomCursor />}
-      {/* <Welcome /> */}
-      <Hero />
-      <div className="relative w-screen h-screen">
-        {/* <ThreeSceneShaderCloudy /> */}
-        <ThreeSceneFloatySwirl />
-        {!isMobile && <ThreeSceneFloatySwirl />}
-        <div className="flex justify-center items-center w-full min-h-screen bg-[#080b26]">
-          <div className="relative w-full max-w-[1200px] p-8 bg-[#0d102e]/50 backdrop-blur-[0.1px] md:backdrop-blur-[1.5px] shadow-lg border border-[#1a1d40] rounded-lg">
-            <Profile />
-            <Experience />
-            <Skills />
-            {/* <Timeline items={items} /> */}
+      <React.StrictMode>
+        <MouseProvider>
+          {!isMobile && <CustomCursor />}
+          {/* <Welcome /> */}
+          <div className="relative w-screen h-screen min-h-screen bg-gradient-to-br from-indigo-950 to-gray-900 bg-opacity-25">
+            {/* <ThreeSceneShaderCloudy /> */}
+            <ThreeSceneFloatySineWave count={1500} particleWidth={50} />
+            {/* <ThreeSceneFloatyModelSwirl modelPath="/models/Duck.glb" modelScale={60 * (isMobile ? 0.5 : 1)} hasLighting={false} />
+            <ThreeSceneFloatyModelSwirl modelPath="/models/Keyboard.glb" modelScale={10 * (isMobile ? 0.5 : 1)} hasLighting={true}/> */}
+            {/* <ThreeSceneFluidSimulation /> */}
+            {/* <GpuWaveScene /> */}
+            <Hero />
+            <div className="flex justify-center items-center w-full min-h-screen">
+              <div className="relative w-full max-w-[1000px] p-8 bg-[#0d102e]/50 backdrop-blur-[0.1px] md:backdrop-blur-[1.5px] shadow-lg border border-[#1a1d40] rounded-lg">
+                <Profile />
+              </div>
+            </div>
+            <br />
+            <div className="flex justify-center items-center w-full min-h-screen">
+              <div className="relative w-full max-w-[1000px] p-8 bg-[#0d102e]/50 backdrop-blur-[0.1px] md:backdrop-blur-[1.5px] shadow-lg border border-[#1a1d40] rounded-lg">
+                <Experience />
+              </div>
+            </div>
+            <br />
+            <div className="flex justify-center items-center w-full min-h-screen">
+              <div className="relative w-full max-w-[1000px] p-8 bg-[#0d102e]/50 backdrop-blur-[0.1px] md:backdrop-blur-[1.5px] shadow-lg border border-[#1a1d40] rounded-lg">
+                <Skills />
+              </div>
+            </div>
+
+            <div className="flex justify-center items-center w-full min-h-screen">
+              <div className="relative w-full max-w-[1000px] p-8 bg-[#0d102e]/50 backdrop-blur-[0.1px] md:backdrop-blur-[1.5px] shadow-lg border border-[#1a1d40] rounded-lg">
+                <Footer />
+              </div>
+            </div>
           </div>
-        </div>
-      </div>
+        </MouseProvider>
+      </React.StrictMode >
     </>
   );
 }
-
-{/* <div className="flex justify-center items-center w-full min-h-screen bg-[#080b26]">
-          <div className="relative w-full max-w-[1200px] p-8 bg-[#0d102e]/50 backdrop-blur-sm shadow-lg border border-[#1a1d40] rounded-lg">
-            <Profile />
-            <Experience />
-            {/* <Timeline items={items} /> */}
-//   </div> 
-// </div> 

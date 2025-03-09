@@ -1,0 +1,13 @@
+.skill-card {
+  position: relative;
+  border: 2px solid rgba(255, 255, 255, 0.8);
+  /* The box-shadow is computed using the CSS variable --glow-intensity. */
+  box-shadow: 0 0 calc(20px * var(--glow-intensity)) calc(15px * var(--glow-intensity)) rgba(0, 255, 255, calc(0.2 * var(--glow-intensity)));
+  transition: transform 0.2s ease-in-out ease, box-shadow 0.3s ease;
+}
+
+.skill-card.hover {
+  /* When hovered, set glow to full (as if intensity is 1) and add lift and scale effect. */
+  transform: translateY(-10px) scale(1.05);
+  box-shadow: 0 0 20px 15px rgba(0, 255, 255, 0.2);
+}

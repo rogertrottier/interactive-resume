@@ -27,26 +27,18 @@ export function Hero() {
     <div className="relative w-screen h-screen overflow-hidden flex justify-center">
       {/* Container that adjusts width based on screen size */}
       <div className="w-full md:w-4/5 h-full relative">
-        {/* Parallax Background Layers */}
-        {["/OlympicSunsetMountains.png", "/OlympicSunsetSkySmall.png"].map((src, index) => (
-          <div
-            key={index}
-            ref={(el) => {
-              if (el && !layersRef.current.includes(el)) {
-                layersRef.current.push(el);
-              }
-            }}
-            className="absolute inset-0 bg-cover bg-bottom"
-            style={{
-              backgroundImage: `url(${src})`,
-              zIndex: 25 - index,
-            }}
-          />
-        ))}
+        
 
         {/* Hero Content */}
-        <div className="relative z-10 flex items-start justify-center h-full text-white text-4xl">
-          <div className="py-36 text-center w-4/5 md:w-full">A Playground of Ideas...</div>
+        <div className="py-36 text-center w-4/5 md:w-full">
+          <label className="block md:inline text-4xl">
+            Crafting Code, Concepts, and Creativity
+          </label>
+          <br />
+          {/* <label className="hidden md:inline text-4xl"> · </label> */}
+          <label className="block md:inline text-4xl">
+            Welcome to My Playground of Ideas.
+          </label>
         </div>
       </div>
     </div>
