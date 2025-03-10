@@ -26,8 +26,6 @@ body {
   background-repeat: no-repeat; /* Prevents tiling */
 }
 
-
-
 h1 {
   font-size: 2em; 
   font-weight: bold;
@@ -54,4 +52,41 @@ h2 {
 
 .timeline-image img{
   width: 500px;
+}
+
+.experience-button {
+  position: relative;
+  background: none;
+  border: none;
+  padding-bottom: 4px; /* extra space for the underline */
+  color: white; /* default text color; adjust if needed */
+  cursor: pointer;
+  transition: color 0.3s ease;
+}
+
+.experience-button::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  bottom: 0;
+  height: 1px;
+  width: 0;
+  background-color: white;
+  transition: width 0.3s ease, left 0.3s ease;
+}
+
+/* On hover, a small underline appears (50% width) */
+.experience-button:hover::after {
+  width: 50%;
+  left: 25%;
+}
+
+/* When selected, the underline expands fully and text is highlighted */
+.experience-button.selected {
+  color: #00bcd4; /* highlight text with a cyan tone */
+}
+
+.experience-button.selected::after {
+  width: 100%;
+  left: 0;
 }

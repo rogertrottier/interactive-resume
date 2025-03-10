@@ -37,10 +37,11 @@ function ParticleWave({
   const velocities = useRef(new Float32Array(count * 3));
 
   // We’ll track the pointer’s unprojected position for repulsion
-  const target = useRef(new THREE.Vector3(0, 0, 0));
+  const target = useRef(new THREE.Vector3(1000, 1000, 1000));
 
-  // On mount, set up pointermove to track the pointer in 3D
+  // On mount, set up listeners for both pointer and touch events.
   useEffect(() => {
+    // Initialize target to the center in world space.
     const centerNDC = new THREE.Vector3(0, 0, 0.8);
     centerNDC.unproject(camera);
     target.current.copy(centerNDC);
@@ -55,28 +56,34 @@ function ParticleWave({
       ndc.unproject(camera);
       target.current.copy(ndc);
     };
-    window.addEventListener("pointermove", handlePointerMove);
-    return () => window.removeEventListener("pointermove", handlePointerMove);
-  }, [camera]);
 
-  // Reset pointer target on visibility restore
-  useEffect(() => {
-    const handleVisibilityChange = () => {
-      if (!document.hidden) {
-        const centerNDC = new THREE.Vector3(0, 0, 0.8);
-        centerNDC.unproject(camera);
-        target.current.copy(centerNDC);
-      }
+    const handleTouchMove = (event: TouchEvent) => {
+      if (document.hidden) return;
+      if (event.touches.length === 0) return;
+      const touch = event.touches[0];
+      const ndc = new THREE.Vector3(
+        (touch.clientX / window.innerWidth) * 2 - 1,
+        -(touch.clientY / window.innerHeight) * 2 + 1,
+        0.8
+      );
+      ndc.unproject(camera);
+      target.current.copy(ndc);
     };
-    document.addEventListener("visibilitychange", handleVisibilityChange);
-    return () =>
-      document.removeEventListener("visibilitychange", handleVisibilityChange);
+
+    window.addEventListener("pointermove", handlePointerMove);
+    window.addEventListener("touchmove", handleTouchMove, { passive: true });
+    return () => {
+      window.removeEventListener("pointermove", handlePointerMove);
+      window.removeEventListener("touchmove", handleTouchMove);
+    };
   }, [camera]);
 
   // Each frame, we do:
   // 1) Compute each particle's "ideal wave position."
   // 2) Spring toward it + pointer repulsion + inter-particle repulsion.
   useFrame((state, delta) => {
+    //!!!limit max delta value. This won't vissually effect the user unless they are dipping below 10fps
+    //!!!needed to pause delta when alt tabbed otherwise physics will go crazy when returning to web app after losing focus (alt tabbed)
     delta = delta % 0.1;
     if (document.hidden) return;
 
@@ -89,7 +96,7 @@ function ParticleWave({
     const amplitude = 3; // wave height
     const frequency = 2; // wave frequency
     const xRange = particleWidth;   // wave width in x
-    const xOffset = -15;  // wave center shift in x
+    const xOffset = -15 * (particleWidth / 45);  // wave center shift in x (45 is an abitrary value based on centering particle effect between desktop and mobile)
     const waveZ = -10;    // put wave a bit behind camera
 
     // Spring parameters
@@ -225,7 +232,7 @@ function ParticleWave({
   });
 
   // Load dot texture from /public
-  const dotTexture = useLoader(THREE.TextureLoader, "/Dot.png");
+  const dotTexture = useLoader(THREE.TextureLoader, "/Img/Dot.png");
 
   return (
     <points geometry={geometry}>

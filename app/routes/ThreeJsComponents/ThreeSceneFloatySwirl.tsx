@@ -5,7 +5,7 @@ import { useIsMobile } from "../useIsMobile"; // adjust the path as needed
 
 function ParticleSwirl({ count = 1000 }: { count?: number }) {
   const { camera } = useThree();
-  const isMobile = useIsMobile();
+  const isMobile = isMobile();
 
   // Generate initial positions, random factors, etc.
   const { positions, randomFactors, initialPositions } = useMemo(() => {
